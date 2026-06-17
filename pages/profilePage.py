@@ -1,27 +1,22 @@
 import streamlit as st
-from pathlib import Path
+import sqlite3 as sql
 import os
 
-fileList = []
 if not st.session_state.get("isUserLoggedIn"):
     st.warning("Please login first")
 else:
     uploadedFile = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
     if uploadedFile:
         counter = 0
-        for i in Path('pages/images').iterdir():
+        for i in os.listdir("pages/images"):
             counter += 1
-        fileType = uploadedFile.name.split('.')
-        path = f"pages/images/{counter}.{fileType[1]}"
-        with open(path, "wb") as f:
+        with open(os.path.join("pages/images", uploadedFile.name), "wb") as f:
             f.write(uploadedFile.getvalue())
-        with open('pages/textFiles/userImages.txt', 'r') as f:
-            f.seek(0)
-            for i in f:
-                fileList.append(i.strip())
-        for i in fileList:
-            username, imagePath = i.strip().split(',')
-            if imagePath != 'defaultProfile.jpg':
-                os.remove(f"pages/images/{imagePath}")
-            with open('pages/textFiles/userImages.txt', 'w') as f:
-                f.write(f"{username},{counter}.{fileType[1]}")
+            os.rename(os.path.join("pages/images", uploadedFile.name), os.path.join("pages/images",f"{counter}.png"))
+        with sql.connect("project_data.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
+            currentProfilePicture = cursor.fetchone()[0]
+            if currentProfilePicture != "defaultProfile.jpg":
+                os.remove(os.path.join("pages/images", currentProfilePicture))
+            cursor.execute(f"UPDATE users SET profilePicturePath = ? WHERE username = ?", (f"{counter}.png",st.session_state.get("username"),))

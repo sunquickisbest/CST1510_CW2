@@ -1,12 +1,12 @@
 import streamlit as st
+import sqlite3 as sql
 st.set_page_config(layout="wide")
 def getUserProfilePicture():
-    with open('pages/textFiles/userImages.txt', 'r') as f:
-        for i in f:
-            username, imagePath = i.strip().split(",")
-            if username == st.session_state.get('username'):
-                return imagePath
-            return None
+    with sql.connect("project_data.db") as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT profilePicturePath FROM users WHERE username = ?", (st.session_state.username,))
+        profilePicturePath = cursor.fetchone()[0]
+        return profilePicturePath
 
 if not st.session_state.get("isUserLoggedIn"):
     st.error("Please log in first to access the page!")
@@ -31,13 +31,13 @@ else:
                                   object-fit: cover;
                                   position: relative;
                                   left: 75vw;
-                                  bottom: 17vh;
+                                  bottom: 15vh;
                             }
                             .st-key-myProfileButton button {
                                   position: relative;
-                                  bottom: 28vh;
+                                  bottom: 26vh;
                                   left: 83vw;
                                   border: 0;
-                            
+
                             }
                             </style>""")

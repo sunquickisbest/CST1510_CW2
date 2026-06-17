@@ -1,8 +1,5 @@
 import streamlit as st
 import functions
-import sqlite3
-
-conn = sqlite3.connect("project_data.db")
 
 st.set_page_config(page_title="Sign-up Page")
 st.title("Sign-up Page")
@@ -36,7 +33,7 @@ st.html("""
 
 .st-key-signUpButton:hover button {
     animation: hoverEffect 0.4s ease-in-out forwards;
-}   
+}
 
 .st-key-signInButton:hover button {
     animation: hoverEffect 0.4s ease-in-out forwards;
