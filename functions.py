@@ -2,10 +2,10 @@ import streamlit as st
 import bcrypt as b
 import sqlite3 as sql
 
-def passwordChecker(x):
+def passwordChecker(x, username):
     with sql.connect("project_data.db") as connection:
         cursor = connection.cursor()
-        cursor.execute("""SELECT password FROM users WHERE username = ?""", (x,))
+        cursor.execute("""SELECT password FROM users WHERE username = ?""", (username,))
         passwordCheck = cursor.fetchone()
         if passwordCheck is not None and b.checkpw(x.encode('utf-8'), passwordCheck[0].encode('utf-8')):
             return True
@@ -40,7 +40,7 @@ def loginUser(x, y):
         st.warning("Username was not found, please check again or sign up")
         return False
     else:
-        if passwordChecker(y):
+        if passwordChecker(y, x):
             st.success("Logged in successfully!")
             return True
         else:
