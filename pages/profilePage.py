@@ -65,8 +65,8 @@ else: # Everything below will only run if user is logged in
                  width: 100px !important;
                  height: 100px;
                  position: fixed;
-                 left: 20vw;
-                 bottom: 75vh;
+                 left: 250px;
+                 top: 100px;
                  aspect-ratio: 1;
                  border-radius: 50%;
                  object-fit: cover;
