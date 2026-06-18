@@ -1,10 +1,11 @@
 import streamlit as st
 import sqlite3 as sql
 import os
+import functions
 
 if not st.session_state.get("isUserLoggedIn"):
     st.warning("Please login first")
-else: # This part below will only run if user is logged in
+else: # Everything below will only run if user is logged in
     uploadedFile = st.file_uploader("Change profile picture", type=["png", "jpg", "jpeg"], max_upload_size=10)
     if uploadedFile:
         with open(os.path.join("pages/images", uploadedFile.name), "wb") as f:
@@ -22,7 +23,36 @@ else: # This part below will only run if user is logged in
         cursor = connection.cursor()
         cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
         profilePicture = cursor.fetchone()[0]
-    st.image(f"pages/images/{profilePicture}")
+        st.image(f"pages/images/{profilePicture}")
+        col1, col2 = st.columns(2, width=600)
+        with col1:
+            desiredUsername = st.text_input("Change username", placeholder="Enter username", width=300)
+        with col2:
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("Confirm"):
+               if desiredUsername == "":
+                   st.warning("Please enter a username")
+               else:
+                   if functions.usernameChecker(desiredUsername):
+                       st.warning("Username already taken")
+                   else:
+                       os.rename(os.path.join("pages/images", f"{st.session_state.get("username")}.png"), os.path.join("pages/images", f"{desiredUsername}.png"))
+                       cursor.execute("UPDATE users set Username = ? WHERE username = ?", (desiredUsername, st.session_state.username))
+                       cursor.execute("UPDATE users set profilePicturePath = ? WHERE username = ?", (f"{desiredUsername}.png", desiredUsername))
+                       st.success("Username changed")
+                       st.session_state.username = desiredUsername
+    with sql.connect("project_data.db") as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT aboutMe from users WHERE username = ?", (st.session_state.get("username"),))
+        userAboutMe = cursor.fetchone()[0]
+    desiredAboutMe = st.text_area(label="About me", max_chars=200, height=200, width=600, value=userAboutMe)
+    if st.button("Submit"):
+        st.success("Your About Me has been changed!")
+        with sql.connect("project_data.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE users set aboutMe = ? WHERE username = ?", (desiredAboutMe, st.session_state.get("username")))
+
+
     st.html("""<style>
     .st-emotion-cache-h5555q {
         min-height: 0;
@@ -35,10 +65,17 @@ else: # This part below will only run if user is logged in
                  width: 100px !important;
                  height: 100px;
                  position: fixed;
-                 left: 18vw;
+                 left: 20vw;
                  bottom: 75vh;
                  aspect-ratio: 1;
                  border-radius: 50%;
                  object-fit: cover;
+    }
+    
+    .st-emotion-cache-jwhd0x {
+        min-height: 0;
+        height: 0;
+        padding: 0;
+        display: inline-block;
     }
     </style>""")
