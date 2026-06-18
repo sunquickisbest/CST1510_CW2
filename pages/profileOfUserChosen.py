@@ -35,8 +35,6 @@ else:
                         position: fixed;
                             left: 50%;
                             transform: translateX(-50%);
-                            top: 330px;
-                    
-                    }
-                      
+                            top: 330px;      
+                    }         
     </style>""")
