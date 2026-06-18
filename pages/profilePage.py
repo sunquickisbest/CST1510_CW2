@@ -36,9 +36,10 @@ else: # Everything below will only run if user is logged in
                    if functions.usernameChecker(desiredUsername):
                        st.warning("Username already taken")
                    else:
-                       os.rename(os.path.join("pages/images", f"{st.session_state.get("username")}.png"), os.path.join("pages/images", f"{desiredUsername}.png"))
                        cursor.execute("UPDATE users set Username = ? WHERE username = ?", (desiredUsername, st.session_state.username))
-                       cursor.execute("UPDATE users set profilePicturePath = ? WHERE username = ?", (f"{desiredUsername}.png", desiredUsername))
+                       if profilePicture != "defaultProfile.jpg":
+                           os.rename(os.path.join("pages/images", f"{st.session_state.get("username")}.png"), os.path.join("pages/images", f"{desiredUsername}.png"))
+                           cursor.execute("UPDATE users set profilePicturePath = ? WHERE username = ?", (f"{desiredUsername}.png", desiredUsername))
                        st.success("Username changed")
                        st.session_state.username = desiredUsername
     with sql.connect("project_data.db") as connection:
