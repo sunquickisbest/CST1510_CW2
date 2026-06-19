@@ -30,9 +30,9 @@ else:
         st.switch_page("pages/homePage.py")
     st.html(body="""<style> .st-key-userFinder {
                                   position: fixed;
-                                  top: 2.5vw;
+                                  top: 40px;
                                   width: 66vw;
-                                  right: 28vw;}
+                                  left: 80px;}
                             .st-emotion-cache-7czcpc.ehg91i91 img {
                                     position: fixed;
                                     top: 60px;

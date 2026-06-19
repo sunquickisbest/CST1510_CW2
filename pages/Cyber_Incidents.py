@@ -27,7 +27,8 @@ with sql.connect("project_data.db") as connection:
     generalInfo.update_traces(marker={"size": 12.5})
     st.plotly_chart(generalInfo)
     SeverityAndCategory = pd.crosstab(Severity, Category, colnames=["Category"], rownames=["Severity"])
-    st.plotly_chart(px.bar(SeverityAndCategory, color="Category", color_discrete_map={"Misconfiguration":"Gray", "Phishing":"Orange", "DDoS":"Red", "Unauthorized Access":"Brown"}))
+    SeverityAndCategory = SeverityAndCategory.reindex(["Low", "Medium", "High", "Critical"])
+    st.plotly_chart(px.bar(SeverityAndCategory, color="Category", color_discrete_map={"Misconfiguration":"#EED9B9", "Phishing":"#D53E0F", "DDoS":"#9B0F06", "Unauthorized Access":"#5E0006", "Malware" : "#D62828"}))
     with st.form("Add Incident"):
         severitySelected = st.selectbox("Select the severity", ("Critical", "High", "Medium", "Low"))
         categorySelected = st.selectbox("Select the category", ("Malware", "Misconfiguration", "Phishing", "DDoS", "Unauthorized Access"))
