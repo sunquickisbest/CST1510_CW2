@@ -28,3 +28,10 @@ with sql.connect("project_data.db") as connection:
     st.plotly_chart(generalInfo)
     SeverityAndCategory = pd.crosstab(Severity, Category, colnames=["Category"], rownames=["Severity"])
     st.plotly_chart(px.bar(SeverityAndCategory, color="Category", color_discrete_map={"Misconfiguration":"Gray", "Phishing":"Orange", "DDoS":"Red", "Unauthorized Access":"Brown"}))
+    with st.form("Add Incident"):
+        severitySelected = st.selectbox("Select the severity", ("Critical", "High", "Medium", "Low"))
+        categorySelected = st.selectbox("Select the category", ("Malware", "Misconfiguration", "Phishing", "DDoS", "Unauthorized Access"))
+        status = st.selectbox("Select the status", ("Open", "In Progress", "Resolved", "Closed"))
+        date = st.datetime_input("Choose the Date")
+        if st.form_submit_button("Add Incident"):
+            cursor.execute("INSERT INTO CyberIncidents(incident_id, timestamp, severity, category, status, description) VALUES (?,?,?,?,?,?)", (max(IncidentIDs)+1, date, severitySelected, categorySelected, status, f"Incident {((max(IncidentIDs)+1)-1000)} description"))
