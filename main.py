@@ -1,42 +1,13 @@
 import streamlit as st
-import functions
 
-st.set_page_config(page_title="Sign-up Page")
-st.title("Sign-up Page")
-with st.form("Sign Up"):
-    username = st.text_input("Enter a username: ", placeholder="Username")
-    password = st.text_input("Enter a password: ", placeholder="Password", type="password")
-    if st.form_submit_button("Sign up", key="signUpButton"):
-        if username == "" or password == "":
-            st.warning("Please both enter a username and password")
-        elif not username.isalnum():
-            st.warning("Username cannot contain symbols!")
-        else:
-            functions.registerUser(username, password)
+cyberIncidents = st.Page("pages/Cyber_Incidents.py")
+homePage = st.Page("pages/homePage.py", title="Home Page", visibility="hidden")
+loginPage = st.Page("pages/loginPage.py", title="Login Page", visibility="hidden")
+Metadata = st.Page("pages/Metadata.py", title="Metadata Page", visibility="hidden")
+itTickets = st.Page("pages/IT_Tickets.py", title="IT Tickets", visibility="hidden")
+profilePage = st.Page("pages/profilePage.py", title="Profile Page", visibility="hidden")
+signupPage = st.Page("pages/signUpPage.py", title="Signup Page", visibility="hidden")
+profileofUserChosen = st.Page("pages/profileOfUserChosen.py", title="Profile Of User Chosen", visibility="hidden")
 
-
-if st.button("Already have an account? Click here to sign in", key="signInButton"):
-     st.switch_page("pages/loginPage.py")
-
-
-st.html("""
-<style>
-@keyframes hoverEffect {
-    from {
-        background-color: black;
-    }
-    to {
-        background-color: white;
-        color:black
-    }
-}
-
-.st-key-signUpButton:hover button {
-    animation: hoverEffect 0.4s ease-in-out forwards;
-}
-
-.st-key-signInButton:hover button {
-    animation: hoverEffect 0.4s ease-in-out forwards;
-}
-</style>
-""")
+navigationPage = st.navigation([signupPage, loginPage, homePage, profilePage, cyberIncidents, Metadata, itTickets,profileofUserChosen], position="top")
+navigationPage.run()
