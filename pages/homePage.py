@@ -85,7 +85,7 @@ else:
                                     
                             .st-key-logoutButton button {
                                         position: absolute;
-                                        right: 180px;
+                                        right: 183px;
                                         bottom: 120px;
                                         width: 70px;
                                     }

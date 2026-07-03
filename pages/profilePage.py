@@ -1,5 +1,3 @@
-from time import sleep
-
 import streamlit as st
 import sqlite3 as sql
 import os

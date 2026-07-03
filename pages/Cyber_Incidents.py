@@ -1,6 +1,4 @@
 import sqlite3 as sql
-from time import sleep
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -38,6 +36,10 @@ with sql.connect("project_data.db") as connection:
     SeverityAndCategory = pd.crosstab(Severity, Category, colnames=["Category"], rownames=["Severity"])
     SeverityAndCategory = SeverityAndCategory.reindex(["Low", "Medium", "High", "Critical"])
     st.plotly_chart(px.bar(SeverityAndCategory, color="Category", color_discrete_map={"Misconfiguration":"#EED9B9", "Phishing":"#D53E0F", "DDoS":"#9B0F06", "Unauthorized Access":"#5E0006", "Malware" : "#D62828"}))
+    st.markdown("""<p style="position: relative; text-align:right; left: 10px;"> Click on the Category to filter </p>""", unsafe_allow_html=True)
+    st.dataframe(pd.read_sql("SELECT * FROM CyberIncidents", connection))
+
+
     with st.form("Add Incident"):
         severitySelected = st.selectbox("Select the severity", ("Critical", "High", "Medium", "Low"))
         categorySelected = st.selectbox("Select the category", ("Malware", "Misconfiguration", "Phishing", "DDoS", "Unauthorized Access"))
@@ -54,9 +56,9 @@ with sql.connect("project_data.db") as connection:
             .st-emotion-cache-4cktc5 p {
                 text-align: right;
                 position: relative;
-                bottom: 270px;
-                left: 80px;
-            
+                bottom: 300px;
+                left: 60px;
+                font-size: 13px;
             }
             
             
