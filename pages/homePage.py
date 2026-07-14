@@ -1,8 +1,9 @@
 import streamlit as st
 import sqlite3 as sql
 from groq import Groq
+from dotenv import load_dotenv
 import os
-
+load_dotenv("api.env")
 apiKey = os.environ.get("GROQ_API_KEY")
 Client = Groq(api_key=apiKey)
 
