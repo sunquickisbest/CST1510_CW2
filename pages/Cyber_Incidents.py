@@ -36,8 +36,8 @@ with sql.connect("project_data.db") as connection:
     SeverityAndCategory = pd.crosstab(Severity, Category, colnames=["Category"], rownames=["Severity"])
     SeverityAndCategory = SeverityAndCategory.reindex(["Low", "Medium", "High", "Critical"])
     st.plotly_chart(px.bar(SeverityAndCategory, color="Category", color_discrete_map={"Misconfiguration":"#EED9B9", "Phishing":"#D53E0F", "DDoS":"#9B0F06", "Unauthorized Access":"#5E0006", "Malware" : "#D62828"}))
-    st.markdown("""<p style="position: relative; text-align:right; left: 10px;"> Click on the Category to filter </p>""", unsafe_allow_html=True)
-    st.dataframe(pd.read_sql("SELECT * FROM CyberIncidents", connection))
+    st.markdown("""<p style="position: relative; text-align:right; left: 10px; bottom: 280px;"> Click on the Category to filter </p>""", unsafe_allow_html=True)
+    st.dataframe(pd.read_sql("SELECT * FROM CyberIncidents", connection), hide_index=True)
 
 
     with st.form("Add Incident"):

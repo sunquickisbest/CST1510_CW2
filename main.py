@@ -1,6 +1,6 @@
 import streamlit as st
 
-cyberIncidents = st.Page("pages/Cyber_Incidents.py")
+cyberIncidents = st.Page("pages/Cyber_Incidents.py", visibility="hidden")
 homePage = st.Page("pages/homePage.py", title="Home Page", visibility="hidden")
 loginPage = st.Page("pages/loginPage.py", title="Login Page", visibility="hidden")
 Metadata = st.Page("pages/Metadata.py", title="Metadata Page", visibility="hidden")
