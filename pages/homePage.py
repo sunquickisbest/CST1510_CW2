@@ -23,7 +23,8 @@ if not st.session_state.get("isUserLoggedIn"):
 ##########
 else:
     selectedUser = st.text_input("", placeholder="Find user", key="userFinder")
-    st.image(f"pages/images/{getUserProfilePicture()}")
+    with st.container(key="ProfilePicture"):
+        st.image(f"pages/images/{getUserProfilePicture()}")
     if selectedUser:
         st.session_state.selectedUser = selectedUser
         st.switch_page("pages/profileOfUserChosen.py")
@@ -87,18 +88,22 @@ else:
                              width: 66vw !important;
                             }
                                   
-                            .st-emotion-cache-7czcpc.ehg91i91 {
-                                position: absolute;
-                                left: 100vw !important;
-                                width: 100px !important;
-                                height: 100px !important;
+                            .st-key-ProfilePicture {
+                                display: flex;
+                                align-items: end;
+                                min-height: 20px;
+                                height: 20px !important;
+                            }
+                            
+                            .st-emotion-cache-1n6tfoc {
+                                flex:none;
+                            
                             }
       
-                            .st-emotion-cache-7czcpc.ehg91i91 img {
-                                position: absolute;
-                                right: 400px;
-                                bottom: 100px;
-                                
+                            .st-key-ProfilePicture img {
+                                position: relative;
+                                right: 170px;
+                                bottom: 90px;
                                 width: 100px !important;
                                 height: 100px;
                                 border-radius: 50%;
@@ -111,18 +116,18 @@ else:
                             }
 
                             .st-key-myProfileButton button {
-                                        position: absolute;
-                                        bottom: 150px;
-                                        width: 100px;
-                                        right: 170px;
-                                    }
+                                position: absolute;
+                                bottom: 160px;
+                                width: 100px;
+                                right: 230px;
+                            }
                                     
                             .st-key-logoutButton button {
-                                        position: absolute;
-                                        right: 183px;
-                                        bottom: 120px;
-                                        width: 70px;
-                                    }
+                                position: absolute;
+                                right: 250px;
+                                bottom: 130px;
+                                width: 70px;
+                            }
                             
                             .stFormSubmitButton{
                                 position: relative;
@@ -146,7 +151,7 @@ else:
                                 position: relative;
                             }
                             
-                            .st-emotion-cache-1n6tfoc {
+                            .st-key-AIContainer {
                                 background-color: #44444E;
                                 padding: 18px;
                                 border-radius: 20px;
