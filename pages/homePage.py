@@ -115,7 +115,7 @@ else:
                             }
                             .st-key-UserInfoButtons {
                                 width: 100%;
-                                position: absolute;
+                                position: relative;
                                 left: 100vw;
                             }
 
@@ -123,12 +123,12 @@ else:
                                 position: absolute;
                                 bottom: 160px;
                                 width: 100px;
-                                right: 150px;
+                                right: 210px;
                             }
                                     
                             .st-key-logoutButton button {
                                 position: absolute;
-                                right: 165px;
+                                right: 220px;
                                 bottom: 130px;
                                 width: 70px;
                             }
