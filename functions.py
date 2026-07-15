@@ -57,7 +57,7 @@ def registerUserForTxt(x, y):
 def registerUser(x, y):
     with sql.connect("project_data.db") as connection:
         cursor = connection.cursor()
-        cursor.execute("""CREATE TABLE IF NOT EXISTS users(id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, profilePicturePath TEXT NOT NULL);""")
+        cursor.execute("""CREATE TABLE IF NOT EXISTS users(id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, profilePicturePath TEXT NOT NULL, aboutMe TEXT);""")
         connection.commit()
         if not usernameChecker(x):
             hashedPassword = b.hashpw(y.encode('utf-8'), b.gensalt()).decode('utf-8')

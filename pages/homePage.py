@@ -3,6 +3,9 @@ import sqlite3 as sql
 from groq import Groq
 from dotenv import load_dotenv
 import os
+
+from streamlit import container
+
 load_dotenv("api.env")
 apiKey = os.environ.get("GROQ_API_KEY")
 Client = Groq(api_key=apiKey)
@@ -22,7 +25,8 @@ if not st.session_state.get("isUserLoggedIn"):
         st.switch_page("pages/loginPage.py")
 ##########
 else:
-    selectedUser = st.text_input("", placeholder="Find user", key="userFinder")
+    with container(key="FindUserInput"):
+        selectedUser = st.text_input("", placeholder="Find user", key="userFinder")
     with st.container(key="ProfilePicture"):
         st.image(f"pages/images/{getUserProfilePicture()}")
     if selectedUser:
@@ -30,13 +34,13 @@ else:
         st.switch_page("pages/profileOfUserChosen.py")
 
     st.title(f"Hello {st.session_state.username.capitalize()}! This is the Home Page!")
-    if st.button("My Profile", key="myProfileButton"):
-        st.switch_page("pages/profilePage.py")
-
-    if st.button("Logout", key="logoutButton"):
-        st.session_state.isUserLoggedIn = False
-        st.session_state.username = ""
-        st.switch_page("pages/homePage.py")
+    with st.container(key="UserInfoButtons"):
+        if st.button("My Profile", key="myProfileButton"):
+            st.switch_page("pages/profilePage.py")
+        if st.button("Logout", key="logoutButton"):
+            st.session_state.isUserLoggedIn = False
+            st.session_state.username = ""
+            st.switch_page("pages/homePage.py")
 
     ###### Tabs for different pages #####
     tab1, tab2, tab3 = st.tabs(["Cyber Incidents", "IT Tickets", "Metadata Page"])
@@ -84,9 +88,10 @@ else:
                                   bottom: 20px;
                             }
                             
-                            .eiqkja70 {
-                             width: 66vw !important;
+                            .st-key-FindUserInput div {
+                                 width: 66vw !important;
                             }
+
                                   
                             .st-key-ProfilePicture {
                                 display: flex;
@@ -97,7 +102,6 @@ else:
                             
                             .st-emotion-cache-1n6tfoc {
                                 flex:none;
-                            
                             }
       
                             .st-key-ProfilePicture img {
@@ -109,7 +113,7 @@ else:
                                 border-radius: 50%;
                                 object-fit: cover;
                             }
-                            .e150o2y10 {
+                            .st-key-UserInfoButtons {
                                 width: 100%;
                                 position: absolute;
                                 left: 100vw;
@@ -119,12 +123,12 @@ else:
                                 position: absolute;
                                 bottom: 160px;
                                 width: 100px;
-                                right: 230px;
+                                right: 150px;
                             }
                                     
                             .st-key-logoutButton button {
                                 position: absolute;
-                                right: 250px;
+                                right: 165px;
                                 bottom: 130px;
                                 width: 70px;
                             }
