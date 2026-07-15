@@ -91,7 +91,9 @@ else:
                             .st-key-FindUserInput div {
                                  width: 66vw !important;
                             }
-
+                            .st-emotion-cache-4rsbii {
+                                overflow-x: hidden;
+                            }
                                   
                             .st-key-ProfilePicture {
                                 display: flex;
