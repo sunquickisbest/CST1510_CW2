@@ -13,7 +13,7 @@ else: # Everything below will only run if user is logged in
             f.write(uploadedFile.getvalue())
             os.rename(os.path.join("pages/images", uploadedFile.name),
                       os.path.join("pages/images", f"{st.session_state.get("username")}.png"))
-        with sql.connect("project_data.db") as connection:
+        with sql.connect("DATA/project_data.db") as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
             currentProfilePicture = cursor.fetchone()[0]
@@ -21,7 +21,7 @@ else: # Everything below will only run if user is logged in
                                (f"{st.session_state.get("username")}.png", st.session_state.get("username"),))
 
     # Getting the user's current profile picture
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
         col1, col2 = st.columns(2, width=600)

@@ -2,7 +2,7 @@ import sqlite3 as sql
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-with sql.connect("project_data.db") as connection:
+with sql.connect("DATA/project_data.db") as connection:
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM CyberIncidents")
     Data = cursor.fetchall()

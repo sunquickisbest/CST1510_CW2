@@ -1,7 +1,7 @@
 import streamlit as st
 import sqlite3 as sql
 
-with sql.connect("project_data.db") as connection:
+with sql.connect("DATA/project_data.db") as connection:
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ?", (st.session_state.selectedUser,))
     userInfo = cursor.fetchone()

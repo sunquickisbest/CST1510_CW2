@@ -3,7 +3,7 @@ import sqlite3 as sql
 import plotly.express as px
 import pandas as pd
 
-with sql.connect("project_data.db") as connection:
+with sql.connect("DATA/project_data.db") as connection:
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM IT_Tickets")
     Tickets = pd.read_sql_query("SELECT * FROM IT_Tickets", connection)

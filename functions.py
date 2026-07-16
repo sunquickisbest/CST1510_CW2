@@ -12,7 +12,7 @@ def passwordCheckerForTxt(x):
         return False
 
 def passwordChecker(x, username):
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("""SELECT password FROM users WHERE username = ?""", (username,))
         passwordCheck = cursor.fetchone()
@@ -30,7 +30,7 @@ def usernameCheckerForTxt(x):
         return False
 
 def usernameChecker(x):
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("""SELECT username FROM users WHERE username = ?""", (x,))
         username = cursor.fetchone()
@@ -55,7 +55,7 @@ def registerUserForTxt(x, y):
             return True
 
 def registerUser(x, y):
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("""CREATE TABLE IF NOT EXISTS users(id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, profilePicturePath TEXT NOT NULL, aboutMe TEXT);""")
         connection.commit()

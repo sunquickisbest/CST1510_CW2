@@ -12,7 +12,7 @@ Client = Groq(api_key=apiKey)
 
 st.set_page_config(layout="wide")
 def getUserProfilePicture():
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT profilePicturePath FROM users WHERE username = ?", (st.session_state.username,))
         profilePicturePath = cursor.fetchone()[0]
@@ -63,7 +63,7 @@ else:
         prompt = st.chat_input("Say something...")
 
         with st.chat_message("assistant"):
-            st.write("Hello! How can I help you today?")
+            st.write("Hello! I'm a Cybersecurity assistant. How can I help you?")
         if prompt:
             st.session_state.messages.append({"role" : "user", "content" : prompt})
             Chat = Client.chat.completions.create(
