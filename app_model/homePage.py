@@ -60,15 +60,15 @@ else:
     tab1, tab2, tab3 = st.tabs(["Cyber Incidents", "IT Tickets", "Metadata Page"])
     with tab1:
         st.header("Cyber Incidents")
-        with open("app_model/Cyber_Incidents.py", "r") as file:
+        with open("app_model/logic/Cyber_Incidents.py", "r") as file:
             exec(file.read())
     with tab2:
         st.header("IT Tickets")
-        with open("app_model/IT_Tickets.py", "r") as file:
+        with open("app_model/logic/IT_Tickets.py", "r") as file:
             exec(file.read())
     with tab3:
         st.header("Metadata Page")
-        with open("app_model/Metadata.py", "r") as file:
+        with open("app_model/logic/Metadata.py", "r") as file:
                 exec(file.read())
     ###
 
