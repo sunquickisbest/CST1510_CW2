@@ -1,9 +1,6 @@
 import streamlit as st
 import functions
 import subprocess
-import threading
-
-threading.Thread(target=lambda: subprocess.run("python3 db.py", shell=True)).start()
 
 st.set_page_config(page_title="Sign-up Page")
 
