@@ -10,7 +10,7 @@ if userInfo is None:
 else:
     st.title("User Info:")
     st.write(userInfo[1])
-    st.image(f"pages/images/{userInfo[3]}", width=200)
+    st.image(f"DATA/images/{userInfo[3]}", width=200)
     st.text_area(label="About Me",value=userInfo[4], height=150, disabled=True, width=400, key="userInfo")
 
 

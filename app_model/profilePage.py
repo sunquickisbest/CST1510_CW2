@@ -9,10 +9,10 @@ if not st.session_state.get("isUserLoggedIn"):
 else: # Everything below will only run if user is logged in
     uploadedFile = st.file_uploader("Change profile picture", type=["png", "jpg", "jpeg"], max_upload_size=10)
     if uploadedFile:
-        with open(os.path.join("pages/images", uploadedFile.name), "wb") as f:
+        with open(os.path.join("DATA/images", uploadedFile.name), "wb") as f:
             f.write(uploadedFile.getvalue())
-            os.rename(os.path.join("pages/images", uploadedFile.name),
-                      os.path.join("pages/images", f"{st.session_state.get("username")}.png"))
+            os.rename(os.path.join("DATA/images", uploadedFile.name),
+                      os.path.join("DATA/images", f"{st.session_state.get("username")}.png"))
         with sql.connect("DATA/project_data.db") as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
@@ -26,7 +26,7 @@ else: # Everything below will only run if user is logged in
         cursor.execute("SELECT profilePicturePath from users WHERE username = ?", (st.session_state.username,))
         col1, col2 = st.columns(2, width=600)
         profilePicture = cursor.fetchone()[0]
-        st.image(f"pages/images/{profilePicture}")
+        st.image(f"DATA/images/{profilePicture}")
 
         col1, col2 = st.columns(2, width=600)
         with col1:
@@ -44,7 +44,7 @@ else: # Everything below will only run if user is logged in
                        if desiredUsername.isalnum():
                            cursor.execute("UPDATE users set Username = ? WHERE username = ?", (desiredUsername, st.session_state.username))
                            if profilePicture != "defaultProfile.jpg":
-                               os.rename(os.path.join("pages/images", f"{st.session_state.get("username")}.png"), os.path.join("pages/images", f"{desiredUsername}.png"))
+                               os.rename(os.path.join("DATA/images", f"{st.session_state.get("username")}.png"), os.path.join("DATA/images", f"{desiredUsername}.png"))
                                cursor.execute("UPDATE users set profilePicturePath = ? WHERE username = ?", (f"{desiredUsername}.png", desiredUsername))
                            st.success("Username changed")
                            st.session_state.username = desiredUsername
@@ -66,7 +66,7 @@ else: # Everything below will only run if user is logged in
                 submitNewPassword = st.button("Change")
 
             if submitNewPassword:
-                with sql.connect("project_data.db") as connection:
+                with sql.connect("DATA/project_data.db") as connection:
                     cursor = connection.cursor()
                     cursor.execute("SELECT password from users WHERE username = ?", (st.session_state.username,))
                     hashedPassword = cursor.fetchone()[0]
@@ -81,14 +81,14 @@ else: # Everything below will only run if user is logged in
                         st.session_state.button_clicked = False
 
 
-    with sql.connect("project_data.db") as connection:
+    with sql.connect("DATA/project_data.db") as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT aboutMe from users WHERE username = ?", (st.session_state.get("username"),))
         userAboutMe = cursor.fetchone()[0]
     desiredAboutMe = st.text_area(label="About me", max_chars=200, height=200, width=600, value=userAboutMe)
     if st.button("Submit"):
         st.success("Your About Me has been changed!")
-        with sql.connect("project_data.db") as connection:
+        with sql.connect("DATA/project_data.db") as connection:
             cursor = connection.cursor()
             cursor.execute("UPDATE users set aboutMe = ? WHERE username = ?", (desiredAboutMe, st.session_state.get("username")))
 

@@ -35,7 +35,7 @@ with st.form("Sign Up"):
 
 
 if st.button("Already have an account? Click here to sign in", key="signInButton"):
-        st.switch_page("pages/loginPage.py")
+        st.switch_page("app_model/loginPage.py")
 
 st.html("""
         <style>

@@ -22,53 +22,51 @@ def getUserProfilePicture():
 if not st.session_state.get("isUserLoggedIn"):
     st.error("Please log in first to access the page!")
     if st.button("Click here to login!"):
-        st.switch_page("pages/loginPage.py")
+        st.switch_page("app_model/loginPage.py")
 ##########
 else:
     with container(key="FindUserInput"):
         selectedUser = st.text_input("", placeholder="Find user", key="userFinder")
     with st.container(key="ProfilePicture"):
-        st.image(f"pages/images/{getUserProfilePicture()}")
+        st.image(f"DATA/images/{getUserProfilePicture()}")
     if selectedUser:
         st.session_state.selectedUser = selectedUser
-        st.switch_page("pages/profileOfUserChosen.py")
+        st.switch_page("app_model/profileOfUserChosen.py")
 
     st.title(f"Hello {st.session_state.username.capitalize()}! This is the Home Page!")
     with st.container(key="UserInfoButtons"):
         if st.button("My Profile", key="myProfileButton"):
-            st.switch_page("pages/profilePage.py")
+            st.switch_page("app_model/profilePage.py")
         if st.button("Logout", key="logoutButton"):
             st.session_state.isUserLoggedIn = False
             st.session_state.username = ""
-            st.switch_page("pages/homePage.py")
+            st.switch_page("app_model/homePage.py")
 
-    ###### Tabs for different pages #####
+    ###### Tabs for different app_model #####
     tab1, tab2, tab3 = st.tabs(["Cyber Incidents", "IT Tickets", "Metadata Page"])
     with tab1:
         st.header("Cyber Incidents")
-        with open("pages/Cyber_Incidents.py", "r") as file:
+        with open("app_model/Cyber_Incidents.py", "r") as file:
             exec(file.read())
     with tab2:
         st.header("IT Tickets")
-        with open("pages/IT_Tickets.py", "r") as file:
+        with open("app_model/IT_Tickets.py", "r") as file:
             exec(file.read())
     with tab3:
         st.header("Metadata Page")
-        with open("pages/Metadata.py", "r") as file:
+        with open("app_model/Metadata.py", "r") as file:
                 exec(file.read())
     with st.container(key="AIContainer"):
         if 'messages' not in st.session_state:
-            st.session_state.messages = [{"role" : "system", "content" : "As a dedicated cybersecurity expert, my sole professional focus is the identification, analysis, and mitigation of digital threats to ensure the integrity, confidentiality, and availability of information systems. I provide rigorous, technically precise guidance rooted in established security frameworks such as NIST, CIS Controls, and ISO/IEC 27001 to assist in hardening infrastructure against sophisticated attack vectors. My methodology prioritizes proactive risk assessment, the implementation of defense-in-depth strategies, and the continuous monitoring of network environments to detect anomalous behavior and potential breaches before they escalate. Whether addressing the complexities of identity and access management, the intricacies of cryptographic implementations, or the nuances of vulnerability management, I operate strictly within the domain of cybersecurity to maintain the highest standards of technical accuracy and defensive posture. Consequently, I am unable to deviate from this expertise or address inquiries outside the scope of cybersecurity, as my purpose is to provide specialized, domain-specific intelligence aimed at protecting digital assets against an evolving landscape of adversaries and systemic weaknesses. IF user goes out of topic just say Not in my Domain. and nothing else"}]
+            st.session_state.messages = [{"role" : "system", "content" : """You are to act exclusively as a Senior Cybersecurity Consultant, providing expert-level advice on information security, threat intelligence, vulnerability management, and defensive architecture. You must maintain a professional and objective tone at all times, focusing solely on providing precise, actionable technical guidance related to these fields. If a user asks a question, requests information, or attempts to engage in conversation that falls outside the scope of cybersecurity, you must respond with exactly: "Not in my domain." Furthermore, if any inquiry involves unethical or illegal activities, you are to strictly refuse to provide harmful information and instead explain the security controls and defensive principles that mitigate such risks."""}]
 
-        prompt = st.chat_input("Say something...")
+        prompt = st.chat_input("Say something to the AI")
 
         with st.chat_message("assistant"):
             st.write("Hello! I'm a Cybersecurity assistant. How can I help you?")
         if prompt:
             st.session_state.messages.append({"role" : "user", "content" : prompt})
-            Chat = Client.chat.completions.create(
-                messages=st.session_state.messages, model="llama-3.3-70b-versatile"
-            )
+            Chat = Client.chat.completions.create(messages=st.session_state.messages, model="llama-3.3-70b-versatile")
             st.session_state.messages.append({"role":"assistant", "content":Chat.choices[0].message.content})
         for i in st.session_state.messages:
             if i["role"] == "system":

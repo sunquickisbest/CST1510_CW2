@@ -3,7 +3,7 @@ import bcrypt as b
 import sqlite3 as sql
 
 def passwordCheckerForTxt(x):
-    with open('pages/textFiles/users.txt', 'r') as file:
+    with open('DATA/textFiles/users.txt', 'r') as file:
         for i in file:
             username, password = i.strip().split(',')
             if b.checkpw(x.encode('utf-8'), password.encode('utf-8')):
@@ -22,7 +22,7 @@ def passwordChecker(x, username):
 
 
 def usernameCheckerForTxt(x):
-    with open('pages/textFiles/users.txt', 'r') as file:
+    with open('DATA/textFiles/users.txt', 'r') as file:
         for i in file:
             username, password = i.strip().split(',')
             if username == x:
@@ -40,7 +40,7 @@ def usernameChecker(x):
 
 
 def registerUserForTxt(x, y):
-    with open('pages/textFiles/users.txt', 'a') as file:
+    with open('DATA/textFiles/users.txt', 'a') as file:
         file.seek(0)
         if usernameChecker(x):
             st.warning("Username already taken!")
@@ -50,7 +50,7 @@ def registerUserForTxt(x, y):
             hashedPassword = b.hashpw(encodedPassword, b.gensalt()).decode('utf-8')
             file.write(f"{x},{hashedPassword}\n")
             st.success("User registered successfully!")
-            with open('pages/textFiles/userImages.txt', 'a') as f:
+            with open('DATA/textFiles/userImages.txt', 'a') as f:
                 f.write(f"{x},defaultProfile.jpg\n")
             return True
 

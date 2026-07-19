@@ -21,10 +21,10 @@ else:
                if functions.loginUser(username, password):
                    st.session_state.username = username
                    st.session_state.isUserLoggedIn = True
-                   st.switch_page("pages/homePage.py")
+                   st.switch_page("app_model/homePage.py")
 
     if st.button("Not registered yet? Click here to sign up", key="signUpButton"):
-        st.switch_page('pages/signUpPage.py')
+        st.switch_page('app_model/signUpPage.py')
 
 
     st.html("""
