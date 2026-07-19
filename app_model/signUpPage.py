@@ -1,19 +1,28 @@
 import streamlit as st
 import functions
+import subprocess
+import threading
+
+threading.Thread(target=lambda: subprocess.run("python3 db.py", shell=True)).start()
 
 st.set_page_config(page_title="Sign-up Page")
 
 st.title("Sign-up Page")
 with st.form("Sign Up"):
+        ### Inputs
         username = st.text_input("Enter a username: ", placeholder="Username")
         password = st.text_input("Enter a password: ", placeholder="Password", type="password")
+        ###
+
         lengthCheck, symbolCheck, notContainUsernameCheck = False, False, False
         if st.form_submit_button("Sign up", key="signUpButton"):
+            ### Signup checks
             if username == "" or password == "":
                     st.warning("Please both enter a username and password")
             elif not username.isalnum():
                     st.warning("Username cannot contain symbols!")
             else:
+                ### Password Checks
                 if len(password) < 8:
                     st.write(":red[Password must be at least 8 characters]")
                 else:
@@ -28,9 +37,12 @@ with st.form("Sign Up"):
                     st.write(":red[Password CANNOT contain your username]")
                 else:
                     notContainUsernameCheck = True
+                ###
 
+                ### If all 3 are true, successfully register the user
                 if lengthCheck and symbolCheck and notContainUsernameCheck:
                     functions.registerUser(username, password)
+                ###
 
 
 

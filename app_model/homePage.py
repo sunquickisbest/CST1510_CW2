@@ -6,9 +6,11 @@ import os
 
 from streamlit import container
 
+### Load AI
 load_dotenv("api.env")
 apiKey = os.environ.get("GROQ_API_KEY")
 Client = Groq(api_key=apiKey)
+###
 
 st.set_page_config(layout="wide")
 def getUserProfilePicture():
@@ -18,22 +20,33 @@ def getUserProfilePicture():
         profilePicturePath = cursor.fetchone()[0]
         return profilePicturePath
 
-##### Prevent the user from accessing the Home Page if they're not logged in #####
+#### Prevent the user from accessing the Home Page if they're not logged in
 if not st.session_state.get("isUserLoggedIn"):
     st.error("Please log in first to access the page!")
     if st.button("Click here to login!"):
         st.switch_page("app_model/loginPage.py")
-##########
+###
 else:
+    ### Bar to find user
     with container(key="FindUserInput"):
         selectedUser = st.text_input("", placeholder="Find user", key="userFinder")
+    ###
+
+    ### User's profile picture
     with st.container(key="ProfilePicture"):
         st.image(f"DATA/images/{getUserProfilePicture()}")
+    ###
+
+    ### If user is searching for user, set session state of selected user and change the page
     if selectedUser:
         st.session_state.selectedUser = selectedUser
         st.switch_page("app_model/profileOfUserChosen.py")
+    ###
+
 
     st.title(f"Hello {st.session_state.username.capitalize()}! This is the Home Page!")
+
+    ### The buttons next to the user's profile picture
     with st.container(key="UserInfoButtons"):
         if st.button("My Profile", key="myProfileButton"):
             st.switch_page("app_model/profilePage.py")
@@ -41,8 +54,9 @@ else:
             st.session_state.isUserLoggedIn = False
             st.session_state.username = ""
             st.switch_page("app_model/homePage.py")
+    ###
 
-    ###### Tabs for different app_model #####
+    ### Tabs for datasets
     tab1, tab2, tab3 = st.tabs(["Cyber Incidents", "IT Tickets", "Metadata Page"])
     with tab1:
         st.header("Cyber Incidents")
@@ -56,6 +70,9 @@ else:
         st.header("Metadata Page")
         with open("app_model/Metadata.py", "r") as file:
                 exec(file.read())
+    ###
+
+    ### The AI chat
     with st.container(key="AIContainer"):
         if 'messages' not in st.session_state:
             st.session_state.messages = [{"role" : "system", "content" : """You are to act exclusively as a Senior Cybersecurity Consultant, providing expert-level advice on information security, threat intelligence, vulnerability management, and defensive architecture. You must maintain a professional and objective tone at all times, focusing solely on providing precise, actionable technical guidance related to these fields. If a user asks a question, requests information, or attempts to engage in conversation that falls outside the scope of cybersecurity, you must respond with exactly: "Not in my domain." Furthermore, if any inquiry involves unethical or illegal activities, you are to strictly refuse to provide harmful information and instead explain the security controls and defensive principles that mitigate such risks."""}]
@@ -64,7 +81,7 @@ else:
 
         with st.chat_message("assistant"):
             st.write("Hello! I'm a Cybersecurity assistant. How can I help you?")
-        if prompt:
+        if prompt: # If message entered, run code below
             st.session_state.messages.append({"role" : "user", "content" : prompt})
             Chat = Client.chat.completions.create(messages=st.session_state.messages, model="llama-3.3-70b-versatile")
             st.session_state.messages.append({"role":"assistant", "content":Chat.choices[0].message.content})

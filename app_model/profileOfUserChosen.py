@@ -1,14 +1,18 @@
 import streamlit as st
 import sqlite3 as sql
 
+### Connect to database
 with sql.connect("DATA/project_data.db") as connection:
     cursor = connection.cursor()
+    ### Getting info about the selected user
     cursor.execute("SELECT * FROM users WHERE username = ?", (st.session_state.selectedUser,))
     userInfo = cursor.fetchone()
+    ###
 if userInfo is None:
     st.error("User not found")
 else:
     st.title("User Info:")
+    ### [1] is username, [3] is profile picture & [4] is the About Me
     st.write(userInfo[1])
     st.image(f"DATA/images/{userInfo[3]}", width=200)
     st.text_area(label="About Me",value=userInfo[4], height=150, disabled=True, width=400, key="userInfo")

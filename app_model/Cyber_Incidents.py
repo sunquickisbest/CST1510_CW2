@@ -23,13 +23,18 @@ with sql.connect("DATA/project_data.db") as connection:
         Date.append(i[0])
         Time.append(i[1])
 
-
+    ### Values needed for the scatter graph
     IncidentsOverTime = {"Incident ID" : IncidentIDs, "Date" : Date, "Severity" : Severity, "Category" : Category}
+
+    ### Turn it into a dataframe
     df = pd.DataFrame(IncidentsOverTime)
+
+    ### Use a scatter graph to show the amount of incidents over time
     generalInfo = px.scatter(df, x="Date", y="Incident ID", hover_data=["Incident ID", "Date", "Severity", "Category"],
     color="Severity",color_discrete_map={"Critical":"Red", "High": "Red", "Medium" : "Orange", "Low": "Gray"})
     generalInfo.update_traces(marker={"size": 12.5})
     st.plotly_chart(generalInfo)
+    ###
 
     st.write("Click on the Severity to filter")
 
@@ -39,16 +44,24 @@ with sql.connect("DATA/project_data.db") as connection:
     st.markdown("""<p style="position: relative; text-align:right; left: 10px; bottom: 280px;"> Click on the Category to filter </p>""", unsafe_allow_html=True)
     st.dataframe(pd.read_sql("SELECT * FROM CyberIncidents", connection), hide_index=True)
 
-
+    ### Functionality to add incident
     with st.form("Add Incident"):
+
+        ### Select boxes
         severitySelected = st.selectbox("Select the severity", ("Critical", "High", "Medium", "Low"))
         categorySelected = st.selectbox("Select the category", ("Malware", "Misconfiguration", "Phishing", "DDoS", "Unauthorized Access"))
         status = st.selectbox("Select the status", ("Open", "In Progress", "Resolved", "Closed"))
+        ###
+
+        ### Date incident happened
         date = st.datetime_input("Choose the Date")
+
+        ### Pass the values in the table and rerun the page to refresh to graph
         if st.form_submit_button("Add Incident", key="addIncidentButton"):
             cursor.execute("INSERT INTO CyberIncidents(incident_id, timestamp, severity, category, status, description) VALUES (?,?,?,?,?,?)", (max(IncidentIDs)+1, date, severitySelected, categorySelected, status, f"Incident {((max(IncidentIDs)+1)-1000)} description"))
             connection.commit()
             st.rerun()
+        ###
 
 
     st.html("""<style> 
